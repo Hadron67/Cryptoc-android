@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name" translatable="false">Cryptoc</string>
+    <string name="encrypt">Encrypt</string>
+    <string name="decrypt">Decrypt</string>
+    <string name="all_files">All files</string>
+    <string name="text_files">Text files</string>
+    <string name="audio_files">Audio files</string>
+    <string name="video_files">Video files</string>
+    <string name="image_files">Image files</string>
+    <string name="ellipsis">…</string>
+    <string name="secret_key">Secret key</string>
+    <string name="delete_original_file">Delete original file</string>
+    <string name="encrypt_or_decrypt">Encrypt/decrypt</string>
+    <string name="file_not_found">File not found</string>
+</resources>

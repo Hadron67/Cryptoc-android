@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <com.hadroncfy.project4.FileKindView
+                app:extension=""
+                app:text="@string/all_files"
+                android:layout_weight="1"
+                android:layout_column="1"
+                />
+            <com.hadroncfy.project4.FileKindView
+                app:extension="txt|md|c|cpp|h|js|json|log"
+                app:text="@string/text_files"
+                android:layout_weight="1"
+                android:layout_column="1"
+                />
+            <com.hadroncfy.project4.FileKindView
+                app:extension="mp3|ogg|wav|mid|midi|amr"
+                app:text="@string/audio_files"
+                android:layout_weight="1"
+                android:layout_column="1"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <com.hadroncfy.project4.FileKindView
+                app:extension="mp4"
+                app:text="@string/video_files"
+                android:layout_weight="1"
+                android:layout_column="1"
+                />
+            <com.hadroncfy.project4.FileKindView
+                app:extension="jpg|jpeg|png|bmp|ico|icon|gif"
+                app:text="@string/image_files"
+                android:layout_weight="1"
+                android:layout_column="1"
+                />
+            <TextView android:layout_weight="1"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </TableLayout>
+
+</android.support.constraint.ConstraintLayout>

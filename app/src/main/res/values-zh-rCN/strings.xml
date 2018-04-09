@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="encrypt">加密</string>
+    <string name="decrypt">解密</string>
+    <string name="all_files">所有文件</string>
+    <string name="text_files">文本文件</string>
+    <string name="audio_files">声音文件</string>
+    <string name="video_files">视频文件</string>
+    <string name="image_files">图片文件</string>
+    <string name="ellipsis">……</string>
+    <string name="secret_key">密钥</string>
+    <string name="delete_original_file">删除原文件</string>
+    <string name="encrypt_or_decrypt">加密/解密</string>
+    <string name="file_not_found">文件未找到</string>
+</resources>

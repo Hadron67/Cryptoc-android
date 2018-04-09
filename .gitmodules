@@ -1,0 +1,3 @@
+[submodule "app/src/main/cpp/cryptoc"]
+	path = app/src/main/cpp/cryptoc
+	url = https://github.com/Hadron67/Cryptoc.git
