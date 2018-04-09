@@ -164,6 +164,7 @@ public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.ViewHo
     @Override
     public void run() {
         search = true;
+        int fileCnt = 0;
         do {
             setNeedRefresh(false);
             while(search && !fq.isEmpty()){
@@ -174,12 +175,15 @@ public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.ViewHo
                     }
                     else if(fileFiler.accept(f)){
                         files.add(new ListItem(f, false));
+                        fileCnt++;
                     }
                 }
-                Message msg = new Message();
-                msg.what = MSG_SEARCH;
-                h.dispatchMessage(msg);
+                if(fileCnt > 10){
+                    h.sendEmptyMessage(MSG_SEARCH);
+                    fileCnt = 0;
+                }
             }
+            h.sendEmptyMessage(MSG_SEARCH);
         } while(isNeedRefresh());
     }
 

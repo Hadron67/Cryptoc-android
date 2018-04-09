@@ -12,4 +12,6 @@
     <string name="delete_original_file">Delete original file</string>
     <string name="encrypt_or_decrypt">Encrypt/decrypt</string>
     <string name="file_not_found">File not found</string>
+    <string name="running">Running…</string>
+    <string name="done">Done</string>
 </resources>

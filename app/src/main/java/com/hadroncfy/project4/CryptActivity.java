@@ -1,12 +1,13 @@
 package com.hadroncfy.project4;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -22,15 +23,21 @@ import android.widget.Toast;
 
 import java.io.File;
 
-public class CryptActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class CryptActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, Runnable, Handler.Callback {
     public static final String KEY_IS_INTERNAL = "IsInternal";
     public static final String KEY_FILE = "file";
     public static final String KEY_MODE = "mode";
 
     private String fileExtension;
 
+    private Handler handler = new Handler();
+
     public static final String MODE_ENCRYPT = "encrypt";
     public static final String MODE_DECRYPT = "decrypt";
+
+    private static final int MSG_CRYPT_DONE = 20;
+
+    private Resources res;
 
     private static final String[] permissions = {
         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -43,6 +50,7 @@ public class CryptActivity extends AppCompatActivity implements AdapterView.OnIt
     private String cryptMode;
 
     private AppCompatCheckBox deleteOriginalFile;
+    private AppCompatButton btnCrypt;
 
     private AppCompatEditText pass;
     private ArrayAdapter<String> adapter;
@@ -50,16 +58,17 @@ public class CryptActivity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Resources res = getResources();
+        res = getResources();
 
         fileExtension = MetaData.getEncryptedExtensionName(this);
         requestPermissions();
         setContentView(R.layout.crypt_activity);
+        handler = new Handler(this);
         Intent intent = getIntent();
         if(intent.getBooleanExtra(KEY_IS_INTERNAL, false)){
             fileName = intent.getStringExtra(KEY_FILE);
             mode = intent.getStringExtra(KEY_MODE);
-            run();
+            main();
         }
         else if(Intent.ACTION_SEND.equals(intent.getAction())){
             Bundle extra = intent.getExtras();
@@ -78,28 +87,28 @@ public class CryptActivity extends AppCompatActivity implements AdapterView.OnIt
                     mode = MODE_ENCRYPT;
                 }
             }
-            run();
+            main();
         }
     }
 
-    private void run(){
+    private void main(){
         Resources res = getResources();
         AppCompatSpinner sp = findViewById(R.id.cryptMode);
-        AppCompatButton btn = findViewById(R.id.btnCrypt);
+        btnCrypt = findViewById(R.id.btnCrypt);
         deleteOriginalFile = findViewById(R.id.deleteOriginalFile);
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Cryptoc.cryptMode);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp.setAdapter(adapter);
         sp.setOnItemSelectedListener(this);
-        btn.setOnClickListener(this);
+        btnCrypt.setOnClickListener(this);
         pass = findViewById(R.id.secretKey);
         if(mode.equals(MODE_DECRYPT)){
-            btn.setText(res.getString(R.string.decrypt));
+            btnCrypt.setText(res.getString(R.string.decrypt));
             sp.setEnabled(false);
         }
         else if(mode.equals(MODE_ENCRYPT)) {
-            btn.setText(res.getString(R.string.encrypt));
+            btnCrypt.setText(res.getString(R.string.encrypt));
         }
     }
 
@@ -121,7 +130,7 @@ public class CryptActivity extends AppCompatActivity implements AdapterView.OnIt
                 }
             }
         }
-        run();
+        main();
     }
 
     @Override
@@ -149,6 +158,13 @@ public class CryptActivity extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void onClick(View v) {
+        btnCrypt.setText(res.getString(R.string.running));
+        btnCrypt.setEnabled(false);
+        new Thread(this).start();
+    }
+
+    @Override
+    public void run() {
         String passwd = pass.getText().toString();
         File f = new File(fileName);
         if(mode.equals(MODE_DECRYPT)){
@@ -160,6 +176,17 @@ public class CryptActivity extends AppCompatActivity implements AdapterView.OnIt
         if(deleteOriginalFile.isChecked()){
             f.delete();
         }
-        finish();
+        handler.sendEmptyMessage(MSG_CRYPT_DONE);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch(msg.what){
+            case MSG_CRYPT_DONE:
+                Toast.makeText(this, res.getString(R.string.done), Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+        }
+        return false;
     }
 }

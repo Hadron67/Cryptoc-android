@@ -12,4 +12,6 @@
     <string name="delete_original_file">删除原文件</string>
     <string name="encrypt_or_decrypt">加密/解密</string>
     <string name="file_not_found">文件未找到</string>
+    <string name="running">运行中……</string>
+    <string name="done">完成</string>
 </resources>
